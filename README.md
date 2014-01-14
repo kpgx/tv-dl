@@ -13,9 +13,10 @@ It requires the Python interpreter, version 2.7 + python-qt4.
 It currently tested on linux/gnu system.
 
 # REQUIRMENTS
-**axel**		http://axel.alioth.debian.org/
-**python-qt4**	https://wiki.python.org/moin/PyQt4
-**youtube-dl**	http://rg3.github.io/youtube-dl/
+
+	**axel**		http://axel.alioth.debian.org/
+	**python-qt4**	https://wiki.python.org/moin/PyQt4
+	**youtube-dl**	http://rg3.github.io/youtube-dl/
 
 To install the requirments in ubuntu $sudo apt-get install "package-name"
 
