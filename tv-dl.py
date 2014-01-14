@@ -1,7 +1,22 @@
 import argparse
-import scrap
 import json
 import os
+import sys  
+from PyQt4.QtGui import *  
+from PyQt4.QtCore import *  
+from PyQt4.QtWebKit import *  
+  
+class Render(QWebPage):  
+  def __init__(self, url):  
+    self.app = QApplication(sys.argv)  
+    QWebPage.__init__(self)  
+    self.loadFinished.connect(self._loadFinished)  
+    self.mainFrame().load(QUrl(url))  
+    self.app.exec_()  
+  
+  def _loadFinished(self, result):  
+    self.frame = self.mainFrame()  
+    self.app.quit()
 
 def find_all(sub, a_str):
     start = 0
@@ -15,7 +30,7 @@ def get_page(url):
 	"""
 	get the source page
 	"""	
-	r = scrap.Render(url)  
+	r = Render(url) 
 	html = r.frame.toHtml()
 	
 	return str(html)	
@@ -106,9 +121,9 @@ def d_axel(f_link,f_path):
 	download using axel
 	"""
 	cmd='youtube-dl -g '+f_link+' | xargs axel -a -n 10 -o "'+f_path+'"'
-	print cmd
-	return 0
-	#~ return os.system(cmd)
+	#~ print cmd
+	#~ return 0
+	return os.system(cmd)
 	
 def d_native(f_link,f_path):
 	"""
@@ -123,28 +138,33 @@ def download(eps,choices,host):
 	"""
 	create the command and send it to appropriate downloader
 	"""
+	#~ print eps
 	ep=eps[0]
 	op=os.system('mkdir "'+ep['path'][0]+'" > /dev/null 2> /dev/null')
 	op=os.system('mkdir "'+ep['path'][0]+'/'+ep['path'][1]+'" > /dev/null 2> /dev/null')
 	count =1
 	for ep in eps:
 		hst=host
+		rv=0
 		if host not in ep['hosts']:
 			hst=ep['hosts'][0]
 		f_link=ep['link'][hst]
 		f_path=ep['path'][0]+'/'+ep['path'][1]+'/'+ep['name']		
-		if choices is not None and len(choices)>0:             
+		if choices is not None and len(choices)>0:
+			#~ print choices,ep['id'][1:]      
 			if ep['id'][1:] in choices:
 				print('Downloading file (%d/%d)...  '%(count,len(choices)))				
 				rv=d_axel(f_link,f_path)
 				#~ rv=d_native(f_link,f_path)
+				count +=1
 				
 		else:
 			print('Downloading file (%d/%d)...  '%(count,len(eps)))				
-			rv=d_axel(f_link,f_path)			
+			rv=d_axel(f_link,f_path)
+			count +=1			
 		if rv!=0:
 			return 1		
-		count +=1
+		#~ count +=1
 	print ('download complete')
 	
 def main(**kwargs):
