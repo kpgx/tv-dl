@@ -16,6 +16,7 @@ def find_all(sub, a_str):
 def get_page(url):
     response = urllib2.urlopen(url)
     page_source = response.read()
+    #~ print page_source
     return page_source
 
 def scrape(source):
@@ -26,7 +27,7 @@ def scrape(source):
     epi_idx=list(find_all('<td class="episode">',source))
     s_name_s=source.find('<a href="index.html">')+21
     s_name_e=source.find('</a>',s_name_s)
-    e_name_s=source.find('</a>',s_name_s)+13
+    e_name_s=source.find('</a>',s_name_s)+8
     e_name_e=source.find('</td>',s_name_s)
     s_name=source[s_name_s:s_name_e].strip()
     e_name=source[e_name_s:e_name_e].strip()
@@ -63,12 +64,13 @@ def scrape(source):
             epi_data['hosts'].append('novamov')
             epi_data['link']['novamov']=source[e_link_novamov_s:e_link_novamov_e]
         #uncomment below part when gorilla support is restored
-        gorilla='http://www.free-tv-video-online.me/player/gorillavid.php?id='
-        e_link_gorilla_s=source.find(gorilla,st,end)+len(gorilla)
-        e_link_gorilla_e=e_link_gorilla_s+12
-        if source.find(gorilla,st,end)>0:            
-            epi_data['hosts'].append('gorilla')
-            epi_data['link']['gorilla']=source[e_link_gorilla_s:e_link_gorilla_e]        
+        #~ gorilla='http://www.free-tv-video-online.me/player/gorillavid.php?id='
+        #~ e_link_gorilla_s=source.find(gorilla,st,end)+len(gorilla)
+        #~ e_link_gorilla_e=e_link_gorilla_s+12
+        #~ if source.find(gorilla,st,end)>0:            
+            #~ epi_data['hosts'].append('gorilla')
+            #~ epi_data['link']['gorilla']=source[e_link_gorilla_s:e_link_gorilla_e]
+            
         episodes.append(epi_data)
         c+=1
     return episodes    
