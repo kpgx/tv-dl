@@ -136,10 +136,11 @@ def download(eps,choices,host):
     op=os.system('mkdir "'+ep['path'][0]+'" > /dev/null 2> /dev/null')
     op=os.system('mkdir "'+ep['path'][0]+'/'+ep['path'][1]+'" > /dev/null 2> /dev/null')
     count =1
+    #~ print eps
     for ep in eps:
         hst=host
         rv=0
-        if host not in ep['hosts']:
+        if host not in ep['hosts'] and len(ep['hosts'])>0:
             hst=ep['hosts'][0]
         f_link=ep['link'][hst]
         f_path=ep['path'][0]+'/'+ep['path'][1]+'/'+ep['name']        
