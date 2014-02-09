@@ -138,6 +138,9 @@ def download(eps,choices,host):
     count =1
     #~ print eps
     for ep in eps:
+        if len(ep['hosts'])<1:
+            
+            continue
         hst=host
         rv=0
         if host not in ep['hosts'] and len(ep['hosts'])>0:
@@ -155,8 +158,9 @@ def download(eps,choices,host):
         else:
             print('Downloading file (%d/%d)...  '%(count,len(eps)))                
             rv=d_axel(f_link,f_path)
-            count +=1            
-        if rv!=0:
+            count +=1
+        #~ print rv
+        if rv!=0 and rv!=31488:
             return 1        
         #~ count +=1
     print ('download complete')

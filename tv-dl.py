@@ -154,7 +154,8 @@ def download(eps,choices,host):
         else:
             print('Downloading file (%d/%d)...  '%(count,len(eps)))                
             rv=d_axel(f_link,f_path)
-            count +=1            
+            count +=1
+        print rv
         if rv!=0:
             return 1        
         #~ count +=1
