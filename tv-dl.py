@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 import argparse
 import json
 import os
@@ -83,8 +84,8 @@ def host_link(episodes):
         if len(episode['link'])>0:
             
             for key in episode['link'].keys():
-                if key=='gorilla':
-                    episode['link']['gorilla']='http://gorillavid.in/'+episode['link']['gorilla']
+                #~ if key=='gorilla':
+                    #~ episode['link']['gorilla']='http://gorillavid.in/'+episode['link']['gorilla']
                 if key=='nowvideo':
                     episode['link']['nowvideo']='http://www.nowvideo.ch/video/'+episode['link']['nowvideo']
                 if key=='novamov':
@@ -130,13 +131,16 @@ def download(eps,choices,host):
     """
     create the command and send it to appropriate downloader
     """
-    #~ print eps
+    #~ print len(eps)
     ep=eps[0]
     op=os.system('mkdir "'+ep['path'][0]+'" > /dev/null 2> /dev/null')
     op=os.system('mkdir "'+ep['path'][0]+'/'+ep['path'][1]+'" > /dev/null 2> /dev/null')
     count =1
     #~ print eps
     for ep in eps:
+        if len(ep['hosts'])<1:
+            
+            continue
         hst=host
         rv=0
         if host not in ep['hosts'] and len(ep['hosts'])>0:
@@ -147,16 +151,16 @@ def download(eps,choices,host):
             #~ print choices,ep['id'][1:]      
             if ep['id'][1:] in choices:
                 print('Downloading file (%d/%d)...  '%(count,len(choices)))                
-                rv=d_axel(f_link,f_path)
-                #~ rv=d_native(f_link,f_path)
+                #~ rv=d_axel(f_link,f_path)
+                rv=d_native(f_link,f_path)
                 count +=1
                 
         else:
             print('Downloading file (%d/%d)...  '%(count,len(eps)))                
             rv=d_axel(f_link,f_path)
             count +=1
-        print rv
-        if rv!=0:
+        #~ print rv
+        if rv!=0 and rv!=31488:
             return 1        
         #~ count +=1
     print ('download complete')
@@ -182,3 +186,4 @@ if __name__ == '__main__':
     parser.add_argument('-H', type=str, help='Hosts')
     args = parser.parse_args()
     main(**vars(args))
+
